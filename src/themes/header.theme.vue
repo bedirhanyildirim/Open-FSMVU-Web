@@ -24,22 +24,28 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 #header {
   .container {
     display: flex;
-    width: 1000px;
+    width: 980px;
     flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
+    padding: 0 10px;
   }
   .container {
     .logo {
+      padding: 15px 0;
       font-size: 20px;
       font-weight: bold;
-      padding: 15px 0;
+    }
+    .logo {
+      a {
+        color: #004680;
+      }
     }
     .content {
 

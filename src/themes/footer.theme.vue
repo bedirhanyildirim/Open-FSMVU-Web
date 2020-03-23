@@ -1,7 +1,7 @@
 <template>
     <div id="footer">
       <div class="container">
-        <h5>Here is footer</h5>
+        <h5>Developed by <a href="http://bedirhanyildirim.com" target="_blank">Bedirhan Yıldırım</a></h5>
       </div>
     </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid lightgray;
+  border-top: 1px solid #e5e5e5;
 }
 
 #footer {
@@ -32,6 +32,10 @@ export default {
       padding: 8px 0;
       font-size: 14px;
       font-weight: normal;
+    }
+    a {
+      color: #004680;
+      font-weight: bold;
     }
   }
 }
