@@ -4,11 +4,14 @@
       <div class="content">
         <h3 class="title">Hoşgeldin</h3>
         <div id="signup">
-          <input type="text" name="email" placeholder="E-mail"/>
-          <input type="password" name="password" placeholder="Şifre"/>
-          <input type="password" name="passwordrepeat" placeholder="Şifre Tekrar"/>
+          <input type="text" v-model="email" name="email" placeholder="E-mail"/>
+          <div class="error-message"></div>
+          <input type="password" v-model="password" name="password" placeholder="Şifre"/>
+          <div class="error-message"></div>
+          <input type="password" v-model="passwordAgain" name="passwordrepeat" placeholder="Şifre Tekrar"/>
+          <div class="error-message"></div>
           <div class="button">
-            <button>Üye Ol</button>
+            <button @click="signup">Üye Ol</button>
           </div>
           <div class="divider"></div>
           <div class="signin">
@@ -17,8 +20,10 @@
           </div>
         </div>
         <div id="signin">
-          <input id="email" type="text" name="email" placeholder="E-mail"/>
-          <input id="password" type="password" name="password" placeholder="Şifre"/>
+          <input type="text" name="email" placeholder="E-mail"/>
+          <div class="error-message"></div>
+          <input type="password" name="password" placeholder="Şifre"/>
+          <div class="error-message"></div>
           <div class="button">
             <button>Giriş Yap</button>
           </div>
@@ -34,13 +39,47 @@
 </template>
 
 <script>
+import firebase from 'firebase'
 export default {
   name: 'WelcomePage',
   data: function () {
     return {
       email: '',
-      password: ''
+      password: '',
+      passwordAgain: ''
     }
+  },
+  mounted: function () {
+    var signupEmail = document.querySelector('#signup input[name=email]')
+    var signupPassword = document.querySelector('#signup input[name=password]')
+    var signupPasswordR = document.querySelector('#signup input[name=passwordrepeat')
+
+    signupEmail.addEventListener('keyup', function () {
+      if (this.value.length >= 8) {
+        if (!this.value.includes('@stu.fsm.edu.tr')) {
+          this.nextSibling.style.display = 'block'
+          this.nextSibling.innerText = 'Lütfen okul emaili ile üye olunuz!'
+        } else {
+          this.nextSibling.style.display = 'none'
+        }
+      }
+    })
+    signupPassword.addEventListener('keyup', function () {
+      if (this.value.length >= 4 && this.value.length < 8) {
+        this.nextSibling.style.display = 'block'
+        this.nextSibling.innerText = 'En az 8 karakter içermelidir!'
+      } else {
+        this.nextSibling.style.display = 'none'
+      }
+    })
+    signupPasswordR.addEventListener('keyup', function () {
+      if (this.value !== signupPassword.value) {
+        this.nextSibling.style.display = 'block'
+        this.nextSibling.innerText = 'Şifreler eşleşmedi!'
+      } else {
+        this.nextSibling.style.display = 'none'
+      }
+    })
   },
   methods: {
     openSignin: function () {
@@ -54,6 +93,32 @@ export default {
       document.getElementById('signup').style.opacity = '1'
       document.getElementById('signin').style.display = 'none'
       document.getElementById('signin').style.opacity = '0'
+    },
+    signup: function () {
+      if (this.email.includes('@stu.fsm.edu.tr')) {
+        if (this.password.length >= 8) {
+          if (this.password.toString() === this.passwordAgain.toString()) {
+            firebase.auth().createUserWithEmailAndPassword(this.email, this.password).catch(function (err) {
+              console.log(err.code, err.message)
+            }).then(
+              console.log('başarılı :)')
+            )
+          } else {
+            console.log('Password is not matching!')
+          }
+        } else {
+          console.log('Password is too short.')
+        }
+      } else {
+        console.log('Invalid email')
+        this.addError(document.querySelector('input[name=email]'), 'Invalid Email')
+      }
+    },
+    addError: function (el, message) {
+      var p = document.createElement('p')
+      p.classList.add('error-message')
+      p.innerHTML = message.trim()
+      el.parentNode.insertBefore(p, el.nextSibling)
     }
   }
 }
@@ -156,6 +221,15 @@ export default {
       #signin {
         opacity: 0;
         display: none;
+      }
+      .error-message {
+        font-size: 12px;
+        text-align: left;
+        padding: 3px 5px;
+        margin-top: -15px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        color: rgba(139,0,0,1);
       }
     }
   }
