@@ -1,0 +1,32 @@
+@import "colors";
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+/* Bedirhan YILDIRIM reset.css */
+body {
+  margin: 0 auto;
+  font: 15px/19px 'Roboto', Arial;
+  transition: all 0.5s ease 0s;
+  background-color: $color-white;
+}
+select, input, textarea {
+  outline: none !important;
+  box-shadow: none !important;
+}
+img {
+  border: none;
+}
+a {
+  text-decoration: none;
+}
+table, tr, td, ul, li, h1, h2, h3, h4, h5, h6, p, form, input, textarea {
+  margin: 0;
+  padding: 0;
+  border: none;
+  list-style-type: none;
+}
+:focus {
+  outline: none;
+}
+html {
+  scroll-behavior: smooth;
+}
