@@ -103,7 +103,7 @@ export default {
           .then(res => {
             if (res) {
               this.$store.dispatch('setUser', res.user)
-              router.push('home')
+              router.push('/')
             }
           })
       } else {
