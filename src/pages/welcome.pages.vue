@@ -3,22 +3,7 @@
     <container display="flex" align-items="center" justify-content="center">
       <div class="content">
         <h3 class="title">Hoşgeldin</h3>
-        <div id="signup">
-          <input type="text" v-model="email" name="email" placeholder="E-mail"/>
-          <div class="error-message"></div>
-          <input type="password" v-model="password" name="password" placeholder="Şifre"/>
-          <div class="error-message"></div>
-          <input type="password" v-model="passwordAgain" name="passwordrepeat" placeholder="Şifre Tekrar"/>
-          <div class="error-message"></div>
-          <div class="button">
-            <button @click="signup">Üye Ol</button>
-          </div>
-          <div class="divider"></div>
-          <div class="signin">
-            <span>Zaten üye misin?</span>
-            <a href="javascript:;" @click="openSignin">Giriş Yap</a>
-          </div>
-        </div>
+        <signup v-on:goToSignin="openSignup"></signup>
         <div id="signin">
           <input type="text" v-model="email" name="email" placeholder="E-mail"/>
           <div class="error-message"></div>
@@ -45,9 +30,10 @@ import 'firebase/auth'
 import store from '../store'
 import { mapGetters } from 'vuex'
 import container from '../components/container'
+import signup from '../components/signup.welcome'
 export default {
   name: 'WelcomePage',
-  components: { container },
+  components: { container, signup },
   store,
   data: function () {
     return {
@@ -65,38 +51,9 @@ export default {
     ])
   },
   mounted: function () {
-    const signupEmail = document.querySelector('#signup input[name=email]')
-    const signupPassword = document.querySelector('#signup input[name=password]')
-    const signupPasswordR = document.querySelector('#signup input[name=passwordrepeat')
     const signinEmail = document.querySelector('#signin input[name=email]')
     const signinPassword = document.querySelector('#signin input[name=password]')
 
-    signupEmail.addEventListener('keyup', function () {
-      if (this.value.length >= 8) {
-        if (!this.value.includes('@stu.fsm.edu.tr')) {
-          this.nextSibling.style.display = 'block'
-          this.nextSibling.innerText = 'Lütfen okul emaili ile üye olunuz!'
-        } else {
-          this.nextSibling.style.display = 'none'
-        }
-      }
-    })
-    signupPassword.addEventListener('keyup', function () {
-      if (this.value.length >= 4 && this.value.length < 8) {
-        this.nextSibling.style.display = 'block'
-        this.nextSibling.innerText = 'En az 8 karakter içermelidir!'
-      } else {
-        this.nextSibling.style.display = 'none'
-      }
-    })
-    signupPasswordR.addEventListener('keyup', function () {
-      if (this.value !== signupPassword.value) {
-        this.nextSibling.style.display = 'block'
-        this.nextSibling.innerText = 'Şifreler eşleşmedi!'
-      } else {
-        this.nextSibling.style.display = 'none'
-      }
-    })
     signinEmail.addEventListener('keyup', function () {
       if (this.value.length >= 8) {
         if (!this.value.includes('@stu.fsm.edu.tr')) {
@@ -117,30 +74,12 @@ export default {
     })
   },
   methods: {
-    openSignin: function () {
-      document.getElementById('signup').style.display = 'none'
-      document.getElementById('signup').style.opacity = '0'
-      document.getElementById('signin').style.display = 'block'
-      document.getElementById('signin').style.opacity = '1'
-    },
     openSignup: function () {
+      console.log('başarılı')
       document.getElementById('signup').style.display = 'block'
       document.getElementById('signup').style.opacity = '1'
       document.getElementById('signin').style.display = 'none'
       document.getElementById('signin').style.opacity = '0'
-    },
-    signup: function () {
-      if (this.email.includes('@stu.fsm.edu.tr')) {
-        if (this.password.length >= 8) {
-          firebase.auth().createUserWithEmailAndPassword(this.email, this.password).catch(function (err) {
-            console.log(err.code, err.message)
-          }).then(console.log, this.openSignin)
-        } else {
-          console.log('Şifre kısa!')
-        }
-      } else {
-        console.log('Hatalı email adresi!')
-      }
     },
     signin: function () {
       if (this.email.includes('@stu.fsm.edu.tr')) {
