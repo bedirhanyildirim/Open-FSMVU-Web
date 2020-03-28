@@ -20,12 +20,12 @@
           </div>
         </div>
         <div id="signin">
-          <input type="text" name="email" placeholder="E-mail"/>
+          <input type="text" v-model="email" name="email" placeholder="E-mail"/>
           <div class="error-message"></div>
-          <input type="password" name="password" placeholder="Şifre"/>
+          <input type="password" v-model="password" name="password" placeholder="Şifre"/>
           <div class="error-message"></div>
           <div class="button">
-            <button>Giriş Yap</button>
+            <button @click="signin">Giriş Yap</button>
           </div>
           <div class="divider"></div>
           <div class="signup">
@@ -33,26 +33,41 @@
             <a href="javascript:;" @click="openSignup">Üye Ol</a>
           </div>
         </div>
+        <span v-if="loggedIn" style="margin-top: 15px; display: block; text-align: center">{{this.userMail}} <a href="javascript:;" @click="logout">Çıkış Yap</a></span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import store from '../store'
+import { mapGetters } from 'vuex'
 export default {
   name: 'WelcomePage',
+  store,
   data: function () {
     return {
       email: '',
       password: '',
-      passwordAgain: ''
+      passwordAgain: '',
+      userMail: '',
+      user: ''
     }
   },
+  computed: {
+    ...mapGetters([
+      'getUser',
+      'loggedIn'
+    ])
+  },
   mounted: function () {
-    var signupEmail = document.querySelector('#signup input[name=email]')
-    var signupPassword = document.querySelector('#signup input[name=password]')
-    var signupPasswordR = document.querySelector('#signup input[name=passwordrepeat')
+    const signupEmail = document.querySelector('#signup input[name=email]')
+    const signupPassword = document.querySelector('#signup input[name=password]')
+    const signupPasswordR = document.querySelector('#signup input[name=passwordrepeat')
+    const signinEmail = document.querySelector('#signin input[name=email]')
+    const signinPassword = document.querySelector('#signin input[name=password]')
 
     signupEmail.addEventListener('keyup', function () {
       if (this.value.length >= 8) {
@@ -80,6 +95,24 @@ export default {
         this.nextSibling.style.display = 'none'
       }
     })
+    signinEmail.addEventListener('keyup', function () {
+      if (this.value.length >= 8) {
+        if (!this.value.includes('@stu.fsm.edu.tr')) {
+          this.nextSibling.style.display = 'block'
+          this.nextSibling.innerText = 'Lütfen okul emaili ile giriş yapınız!'
+        } else {
+          this.nextSibling.style.display = 'none'
+        }
+      }
+    })
+    signinPassword.addEventListener('keyup', function () {
+      if (this.value.length >= 4 && this.value.length < 8) {
+        this.nextSibling.style.display = 'block'
+        this.nextSibling.innerText = 'En az 8 karakter içermelidir!'
+      } else {
+        this.nextSibling.style.display = 'none'
+      }
+    })
   },
   methods: {
     openSignin: function () {
@@ -97,21 +130,29 @@ export default {
     signup: function () {
       if (this.email.includes('@stu.fsm.edu.tr')) {
         if (this.password.length >= 8) {
-          if (this.password.toString() === this.passwordAgain.toString()) {
-            firebase.auth().createUserWithEmailAndPassword(this.email, this.password).catch(function (err) {
-              console.log(err.code, err.message)
-            }).then(
-              console.log('başarılı :)')
-            )
-          } else {
-            console.log('Password is not matching!')
-          }
+          firebase.auth().createUserWithEmailAndPassword(this.email, this.password).catch(function (err) {
+            console.log(err.code, err.message)
+          }).then(console.log, this.openSignin)
         } else {
-          console.log('Password is too short.')
+          console.log('Şifre kısa!')
         }
       } else {
-        console.log('Invalid email')
-        this.addError(document.querySelector('input[name=email]'), 'Invalid Email')
+        console.log('Hatalı email adresi!')
+      }
+    },
+    signin: function () {
+      if (this.email.includes('@stu.fsm.edu.tr')) {
+        if (this.password.length >= 8) {
+          firebase.auth().signInWithEmailAndPassword(this.email, this.password).catch(function (err) {
+            console.log(err.code, err.message)
+          }).then(res => {
+            this.$store.dispatch('setUser', res.user)
+          })
+        } else {
+          console.log('Şifre kısa!')
+        }
+      } else {
+        console.log('Hatalı email adresi!')
       }
     },
     addError: function (el, message) {
@@ -119,6 +160,13 @@ export default {
       p.classList.add('error-message')
       p.innerHTML = message.trim()
       el.parentNode.insertBefore(p, el.nextSibling)
+    },
+    logout: function () {
+      firebase.auth().signOut().catch(function (err) {
+        console.log(err)
+      }).then(_ => {
+        this.$store.dispatch('logOut')
+      })
     }
   }
 }
@@ -195,6 +243,9 @@ export default {
           }
           button:hover {
             cursor: pointer;
+          }
+          button:disabled {
+            background-color: #fafafa;
           }
         }
         span {

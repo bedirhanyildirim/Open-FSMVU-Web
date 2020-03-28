@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 import './assets/styles/reset.scss'
 import './assets/styles/variables.scss'
 require('dotenv').config({
@@ -10,8 +10,6 @@ require('dotenv').config({
 })
 
 Vue.config.productionTip = false
-
-console.log(process.env)
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_API_KEY,
