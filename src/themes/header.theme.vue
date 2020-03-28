@@ -1,6 +1,6 @@
 <template>
     <div id="header">
-      <div class="container">
+      <container display="flex" align-items="center" justify-content="space-between">
         <div class="logo">
           <router-link to="/">Open FSMVU</router-link>
         </div>
@@ -9,13 +9,17 @@
             <router-link to="/">Anasayfa</router-link>
           </div>
         </div>
-      </div>
+      </container>
     </div>
 </template>
 
 <script>
+import container from '../components/container'
 export default {
-  name: 'header.theme.vue'
+  name: 'header.theme.vue',
+  components: {
+    container
+  }
 }
 </script>
 
@@ -28,40 +32,30 @@ export default {
 }
 
 #header {
-  .container {
-    display: flex;
-    width: 980px;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
+  .logo {
+    padding: 15px 0;
+    font-size: 20px;
+    font-weight: bold;
   }
-  .container {
-    .logo {
-      padding: 15px 0;
-      font-size: 20px;
+  .logo {
+    a {
+      color: #004680;
+    }
+  }
+  .content {
+
+  }
+  .content {
+    .nav {
+    }
+
+    .nav a {
+      color: #000000;
       font-weight: bold;
     }
-    .logo {
-      a {
-        color: #004680;
-      }
-    }
-    .content {
 
-    }
-    .content {
-      .nav {
-      }
-
-      .nav a {
-        color: #000000;
-        font-weight: bold;
-      }
-
-      .nav a.router-link-exact-active {
-        /*color: #42b983;*/
-      }
+    .nav a.router-link-exact-active {
+      /*color: #42b983;*/
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="welcome-page">
-    <div class="container">
+    <container display="flex" align-items="center" justify-content="center">
       <div class="content">
         <h3 class="title">Hoşgeldin</h3>
         <div id="signup">
@@ -33,9 +33,9 @@
             <a href="javascript:;" @click="openSignup">Üye Ol</a>
           </div>
         </div>
-        <span v-if="loggedIn" style="margin-top: 15px; display: block; text-align: center">{{this.userMail}} <a href="javascript:;" @click="logout">Çıkış Yap</a></span>
+        <span v-if="loggedIn" style="margin-top: 15px; display: block; text-align: center">{{this.getUser.email}} <a href="javascript:;" @click="logout">Çıkış Yap</a></span>
       </div>
-    </div>
+    </container>
   </div>
 </template>
 
@@ -44,8 +44,10 @@ import firebase from 'firebase/app'
 import 'firebase/auth'
 import store from '../store'
 import { mapGetters } from 'vuex'
+import container from '../components/container'
 export default {
   name: 'WelcomePage',
+  components: { container },
   store,
   data: function () {
     return {
