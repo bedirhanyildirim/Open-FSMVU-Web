@@ -3,17 +3,14 @@
     <container display="flex" align-items="center" justify-content="center">
       <div class="content">
         <h3 class="title">Hoşgeldin</h3>
-        <signup v-if="currentPage=='signup'" v-on:goToSignin="openSignin"></signup>
-        <signin v-if="currentPage=='signin'" v-on:goToSignup="openSignup"></signin>
-        <span v-if="loggedIn" style="margin-top: 15px; display: block; text-align: center">{{this.getUser.email}} <a href="javascript:;" @click="logout">Çıkış Yap</a></span>
+        <signup v-if="currentPage==='signup'" v-on:goToSignin="openSignin"></signup>
+        <signin v-if="currentPage==='signin'" v-on:goToSignup="openSignup"></signin>
       </div>
     </container>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase/app'
-import 'firebase/auth'
 import store from '../store'
 import { mapGetters } from 'vuex'
 import container from '../components/container'
@@ -30,7 +27,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getUser',
       'loggedIn'
     ])
   },
@@ -42,13 +38,6 @@ export default {
     },
     openSignup: function () {
       this.currentPage = 'signup'
-    },
-    logout: function () {
-      firebase.auth().signOut().catch(function (err) {
-        console.log(err)
-      }).then(_ => {
-        this.$store.dispatch('logOut')
-      })
     }
   }
 }

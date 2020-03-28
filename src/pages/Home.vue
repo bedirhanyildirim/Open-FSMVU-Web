@@ -1,14 +1,16 @@
 <template>
   <div class="home">
-    <div class="container">
+    <container display="flex" justify-content="left">
       Here is the content
-    </div>
+    </container>
   </div>
 </template>
 
 <script>
+import container from '../components/container'
 export default {
-  name: 'Home'
+  name: 'Home',
+  components: { container }
 }
 </script>
 
@@ -18,13 +20,5 @@ export default {
   padding: 20px 0;
   align-items: center;
   justify-content: center;
-}
-.home {
-  .container {
-    width: 1000px;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-  }
 }
 </style>

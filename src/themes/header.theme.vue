@@ -7,6 +7,7 @@
         <div class="content">
           <div class="nav">
             <router-link to="/">Anasayfa</router-link>
+            <a href="javascript:;" @click="logout">Çıkış Yap</a>
           </div>
         </div>
       </container>
@@ -14,11 +15,34 @@
 </template>
 
 <script>
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import store from '../store'
+import router from '../router'
+import { mapGetters } from 'vuex'
 import container from '../components/container'
 export default {
   name: 'header.theme.vue',
+  store,
+  router,
   components: {
     container
+  },
+  computed: {
+    ...mapGetters([
+      'getUser',
+      'loggedIn'
+    ])
+  },
+  methods: {
+    logout: function () {
+      firebase.auth().signOut().catch(function (err) {
+        console.log(err)
+      }).then(_ => {
+        this.$store.dispatch('logOut')
+        router.push('/welcome')
+      })
+    }
   }
 }
 </script>
@@ -50,12 +74,13 @@ export default {
     }
 
     .nav a {
-      color: #000000;
+      color: #303030;
       font-weight: bold;
+      margin-left: 15px;
     }
 
     .nav a.router-link-exact-active {
-      /*color: #42b983;*/
+      color: #004680;
     }
   }
 }
