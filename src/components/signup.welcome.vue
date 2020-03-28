@@ -1,8 +1,8 @@
 <template>
   <div id="signup">
     <div id="form-error" v-if="error">{{ this.errorMessage }}</div>
-    <label for="email" class="input-name">Email</label>
-    <input id="email" type="text" v-model="email" name="email" placeholder="ad.soyad@stu.fsm.edu.tr"/>
+    <label for="signup-email" class="input-name">Email</label>
+    <input id="signup-email" type="text" v-model="email" name="email" placeholder="ad.soyad@stu.fsm.edu.tr"/>
     <div class="error-message">Lütfen okul emailini kullanınız.</div>
     <input type="password" v-model="password" name="password" placeholder="Şifre"/>
     <div class="error-message">En az 8 karakter içermelidir.</div>
@@ -27,6 +27,7 @@ import router from '../router'
 export default {
   name: 'signup.welcome',
   store,
+  router,
   data: function () {
     return {
       email: '',
@@ -101,6 +102,7 @@ export default {
           })
           .then(res => {
             if (res) {
+              this.$store.dispatch('setUser', res.user)
               router.push('home')
             }
           })
@@ -123,6 +125,8 @@ export default {
         case 'auth/weak-password':
           this.errorMessage = 'Zayıf şifre!'
           break
+        default:
+          this.errorMessage = 'Bir hata oluştu!'
       }
     },
     signin: function () {
