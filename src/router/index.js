@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Store from '../store'
 import Home from '../pages/Home.vue'
 import WelcomePage from '../pages/welcome.pages'
 
@@ -10,7 +11,10 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    meta: { title: 'Home | Open FSMVU' }
+    meta: {
+      title: 'Home | Open FSMVU',
+      requiresAuth: true
+    }
   },
   {
     path: '/welcome',
@@ -32,7 +36,17 @@ router.beforeResolve((to, from, next) => {
 
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title
-  next()
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!Store.getters.loggedIn) {
+      next({
+        name: 'Welcome'
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
