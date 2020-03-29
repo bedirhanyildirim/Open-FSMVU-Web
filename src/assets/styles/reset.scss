@@ -1,5 +1,5 @@
 @import "colors";
-@import url("https://fonts.googleapis.com/css?family=Roboto");
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap');
 
 /* Bedirhan YILDIRIM reset.css */
 body {
@@ -29,4 +29,15 @@ table, tr, td, ul, li, h1, h2, h3, h4, h5, h6, p, form, input, textarea {
 }
 html {
   scroll-behavior: smooth;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
