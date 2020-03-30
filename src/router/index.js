@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Store from '../store'
 import Home from '../pages/home.pages.vue'
 import WelcomePage from '../pages/welcome.pages'
+import CompleteProfile from '../pages/completeProfile.pages'
 
 Vue.use(VueRouter)
 
@@ -12,7 +13,16 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      title: 'Home | Open FSMVU',
+      title: 'Anasayfa | Open FSMVU',
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/complete-profile',
+    name: 'completeProfile',
+    component: CompleteProfile,
+    meta: {
+      title: 'Profilini Tamamla | Open FSMVU',
       requiresAuth: true
     }
   },
@@ -20,7 +30,7 @@ const routes = [
     path: '/welcome',
     name: 'Welcome',
     component: WelcomePage,
-    meta: { title: 'Welcole | Open FSMVU' }
+    meta: { title: 'Hoşgeldin | Open FSMVU' }
   }
 ]
 

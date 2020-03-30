@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div id="home">
     <container display="flex" justify-content="left">
       Here is the content
     </container>
@@ -15,10 +15,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.home {
+#home {
   display: flex;
   padding: 20px 0;
   align-items: center;
   justify-content: center;
+  background-color: #f7f7f7;
 }
 </style>
