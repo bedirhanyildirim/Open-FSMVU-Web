@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import 'firebase/database'
+import 'firebase/firestore'
 
 const app = initializeApp({
   apiKey: process.env.VUE_APP_API_KEY,
@@ -12,5 +12,5 @@ const app = initializeApp({
   measurementId: process.env.VUE_APP_MEASUREMENT_ID
 })
 
-export const db = app.database()
-export const usersRef = db.ref('users')
+export const db = app.firestore()
+export const usersCollection = db.collection('users')

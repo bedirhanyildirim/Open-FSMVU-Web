@@ -95,7 +95,8 @@ import store from '../store'
 import container from '../components/container'
 import dropdowninput from '../components/dropdowninput'
 import { mapGetters } from 'vuex'
-import { usersRef } from '../firebase/index'
+import { usersCollection } from '../firebase/index'
+import { university } from '../firebase/university'
 export default {
   name: 'completeProfile.pages.vue',
   components: { container, dropdowninput },
@@ -159,15 +160,16 @@ export default {
   },
   created () {
     this.email = this.getUser.email + (this.getUser.emailVerified ? ' (onaylandı)' : ' (onaylanmadı)')
+    console.log(university.name)
   },
   methods: {
     getGender: function (data) {
       this.gender = data
     },
     submitUserInfos: function () {
-      console.log('heyyo')
-      console.log(this.getUser.uid)
-      usersRef.push({
+      // console.log('heyyo')
+      console.log('uid: ' + this.getUser.uid)
+      usersCollection.doc(this.getUser.uid).set({
         uid: this.getUser.uid,
         email: this.getUser.email,
         username: this.username,
@@ -183,6 +185,10 @@ export default {
         department: {
           code: this.stuNo.slice(4, 6)
         }
+      }).then(function (res) {
+        console.log(res)
+      }).catch(function (error) {
+        console.log(error)
       })
     }
   }
